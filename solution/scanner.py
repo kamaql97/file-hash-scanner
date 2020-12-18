@@ -8,7 +8,7 @@ import os
 import requests
 from requests.exceptions import HTTPError, RequestException
 
-from helpers import is_valid_hash, make_md_table
+from solution.helpers import is_valid_hash, make_md_table
 
 
 class FileScanner:
