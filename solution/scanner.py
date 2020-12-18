@@ -85,6 +85,8 @@ class FileScanner:
             logging.error(err)
             raise KeyError('Dictionary key(s) not found')
         else:
-            make_md_table('scanned file', hashes)
-            make_md_table('results', resuls)
-            make_md_table('scans', scans)
+            out_str = make_md_table('scanned file', hashes)
+            out_str += make_md_table('results', resuls)
+            out_str += make_md_table('scans', scans)
+            with open('output.md', 'w+') as output_file:
+                output_file.write(out_str)
