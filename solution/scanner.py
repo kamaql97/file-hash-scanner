@@ -24,7 +24,7 @@ class FileScanner:
         '''
 
         logging.basicConfig(
-            filename='../errors.log',
+            filename='errors.log',
             level=logging.ERROR,
             format='%(asctime)s.%(msecs)03d %(levelname)s: %(funcName)s: %(message)s',
             datefmt='%Y-%m-%d %H:%M:%S',
