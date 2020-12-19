@@ -9,15 +9,21 @@ import requests
 from requests.exceptions import HTTPError, RequestException
 
 from solution.helpers import is_valid_hash, make_md_table
+from solution.exceptions import (InvalidFileHashError, APIKeyNotFoundError, 
+                                VirusTotalUnreachableError, UnexpectedResponseError)
 
 
 class FileScanner:
     '''
     Takes file's hash and makes a request to VirusTotal
     then returns report formatted as three markdown tables
+
+    Attributes:
+        resource -- file's hash (MD5, SHA-1, or SHA-256)
+        file_name -- name of file to write scan results
     '''
 
-    def __init__(self, resource=None):
+    def __init__(self, resource=None, file_name='output.md'):
         '''
         Configures error logging and checks if the VirusTotal
         API key exists on the system and if a hash is entred
@@ -30,14 +36,15 @@ class FileScanner:
             datefmt='%Y-%m-%d %H:%M:%S',
             )
 
+        self.file_name = file_name
+
         self.resource = resource
         if self.resource is None or not is_valid_hash(self.resource):
-            raise TypeError('Enter a valid file hash (MD5, SHA-1, or SHA-256)')
+            raise InvalidFileHashError()
 
-        try:
-            self.api_key = os.environ['VIRUSTOTAL_API_KEY']
-        except KeyError:
-            raise KeyError('Environmental variable not found')
+        self.api_key = os.environ.get('VIRUSTOTAL_API_KEY')
+        if self.api_key is None:
+            raise APIKeyNotFoundError()
 
 
     def request_data(self):
@@ -53,16 +60,16 @@ class FileScanner:
             self.response.raise_for_status()
         except ConnectionError as err:
             logging.error(err)
-            raise   # Unable to connect
+            raise VirusTotalUnreachableError()
         except HTTPError as err:
             logging.error(err)
-            raise   # Forbidden, NotFound, etc..
+            raise UnexpectedResponseError()
         except RequestException as err:
             logging.error(err)
-            raise   # Other request handling error
+            raise RequestException('Request could not be handled')
         except Exception as err:
             logging.error(err)
-            raise   # Some unknown error
+            raise Exception('An unknown error has occured')
         else:
             self.handle_response()
 
@@ -84,9 +91,13 @@ class FileScanner:
         except KeyError as err:
             logging.error(err)
             raise KeyError('Dictionary key(s) not found')
+        except Exception as err:
+            logging.error(err)
+            raise Exception('An unknown error has occured')
         else:
-            out_str = make_md_table('scanned file', hashes)
-            out_str += make_md_table('results', resuls)
-            out_str += make_md_table('scans', scans)
-            with open('output.md', 'w+') as output_file:
+            out_str = (make_md_table('scanned file', hashes)
+                        + make_md_table('results', resuls)
+                        + make_md_table('scans', scans))
+            with open(self.file_name, 'w+') as output_file:
                 output_file.write(out_str)
+            print(f'Process completed, check {self.file_name}')
