@@ -1,26 +1,45 @@
+"""
+Palo Alto Networks Assignement - Kamal Qarain
+
+Helper methods for input validation and output formatting
+"""
+
 import re
 
 
 def is_valid_hash(file_hash):
     """
-    Checks if the inputted string is a valid file hash
-    """
+    Method to check for valid file hash
+
+    Inputs:
+        file_hash --- string representing a file's hash
     
+    Output:
+        Boolean flag (True or False)
+    """
+
     return bool(re.match("^[a-fA-F0-9]{64}$", file_hash)        # SHA-256
                 or re.match("^[a-fA-F0-9]{40}$", file_hash)     # SHA-1
                 or re.match("^[a-fA-F0-9]{32}$", file_hash))    # MD5
 
 
-def make_md_table(title, input_dict):
+def make_md_table(title, dicts):
     '''
-    Takes list of dictionaries and builds a markdown table
+    Method to build a markdown table
+
+    Inputs:
+        title --- String represnting table title
+        dicts --- List of dictionaries represnting table contents
+    
+    Output:
+        String in markdown formatting
     '''
 
     ans_str = "\n"
-    table_cols = list(input_dict[0].keys() if input_dict else [])
+    table_cols = list(dicts[0].keys() if dicts else [])
     table_rows = [["_"+ col_name +"_" for col_name in table_cols]]
-    for item in input_dict:
-        table_rows.append([str(item[col] if item[col] is not None else "") for col in table_cols])
+    for one_dict in dicts:
+        table_rows.append([str(one_dict[col] if one_dict[col] is not None else "") for col in table_cols])
     max_col_widths = [max(map(len,col)) for col in zip(*table_rows)]
     table_rows.insert(1, ["-" * width for width in max_col_widths])
     joined_str = "|".join(["{{:<{}}}".format(i) for i in max_col_widths])

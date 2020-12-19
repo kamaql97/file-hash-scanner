@@ -1,3 +1,9 @@
+"""
+Palo Alto Networks Assignement - Kamal Qarain
+
+Custom exceptions raised when specific errors occur
+"""
+
 class InvalidFileHashError(Exception):
     """
     Exception raised when the entered string is not a valid

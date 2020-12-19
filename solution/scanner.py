@@ -1,5 +1,7 @@
 """
 Palo Alto Networks Assignement - Kamal Qarain
+
+File scanning code
 """
 
 import logging
@@ -9,7 +11,7 @@ import requests
 from requests.exceptions import HTTPError, RequestException
 
 from solution.helpers import is_valid_hash, make_md_table
-from solution.exceptions import (InvalidFileHashError, APIKeyNotFoundError, 
+from solution.exceptions import (InvalidFileHashError, APIKeyNotFoundError,
                                 VirusTotalUnreachableError, UnexpectedResponseError)
 
 
