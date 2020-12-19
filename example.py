@@ -1,4 +1,8 @@
-""" Example usage code """
+"""
+Palo Alto Networks Assignement - Kamal Qarain
+
+Example usage code
+"""
 
 from solution.scanner import FileScanner
 
