@@ -12,7 +12,7 @@ def is_valid_hash(file_hash):
     Method to check for valid file hash
 
     Inputs:
-        file_hash --- string representing a file's hash
+        file_hash --- String representing a file's hash
     
     Output:
         Boolean flag (True or False)
