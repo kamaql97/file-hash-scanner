@@ -39,8 +39,10 @@ class TestScannnerAPI(unittest.TestCase):
     Test case for testing API response with a known malicious file
     """
     def test_known_file(self):
-        msg, results = request_data('84c82835a5d21bbcf75a61706d8ab549')
-        self.assertEqual(msg, SUCCESS_MSG, 'Known file should return result') 
+        try:
+            request_data('84c82835a5d21bbcf75a61706d8ab549')
+        except:
+            self.fail('Known file should return result with no errors, check logging file') 
 
 
 if __name__ == '__main__':
