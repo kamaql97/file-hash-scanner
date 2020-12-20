@@ -32,8 +32,6 @@ def request_data(resource=None, user_key=None):
                         format='%(asctime)s.%(msecs)03d %(levelname)s: %(funcName)s: %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
 
-    out_str = ''
-
     if resource is None or not is_valid_hash(resource):
         raise InvalidFileHashError()
 
@@ -73,6 +71,8 @@ def handle_data(data):
         String containg the scan results (if the file could be scanned)
     '''
     
+    out_str = ''
+
     try:
         msg = data['verbose_msg']
 
