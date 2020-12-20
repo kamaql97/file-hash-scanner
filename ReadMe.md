@@ -15,15 +15,18 @@ _Note that code was written and tested on **Python 3.8.5**. Using a different Py
 
 
 ## Usage
-Create a new instance of the class `FileScanner` with a file's hash as an argument. 
-The code can then print out the requested markdown tables.
+Use the `request_data` method with the following arguments:
+1. String represting the file's hash (MD5, SHA-1, SHA-256)
+1. (Optional) VirusTotal API key as a string if not stored in your environmental variables.
+
+The function prints the API response message and returns the scan results (if the file could be scanned).
 
 ##### example.py
 ```python
-from solution.scanner import FileScanner
+from solution.scanner import request_data
 
-f = FileScanner('84c82835a5d21bbcf75a61706d8ab549')
-f.request_data()
+with open('output.md', 'w+') as output_file:
+    output_file.write(request_data('84c82835a5d21bbcf75a61706d8ab549'))
 ```
 
 ## Feedback
