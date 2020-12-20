@@ -7,5 +7,5 @@ Example usage code
 from solution.scanner import request_data
 
 
-with open('output.md', 'w+') as output_file:
+with open('example_output.md', 'w+') as output_file:
     output_file.write(request_data('84c82835a5d21bbcf75a61706d8ab549'))
