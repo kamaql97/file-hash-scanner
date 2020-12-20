@@ -11,14 +11,17 @@ import requests
 from requests.exceptions import HTTPError, RequestException
 
 from solution.helpers import is_valid_hash, make_md_table
-from solution.exceptions import (InvalidFileHashError, APIKeyNotFoundError,
-                                VirusTotalUnreachableError, UnexpectedResponseError)
+
+
+logging.basicConfig(filename='errors.log', level=logging.ERROR,
+                    format='%(asctime)s.%(msecs)03d %(levelname)s: %(funcName)s: %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
 
 
 def request_data(resource=None, user_key=None):
     '''
-    Method that configures error logging, checks for exisitance of API key
-    and a valid file hash, then makes a get request to the VirusTotal Service
+    Method that checks for exisitance of API key and a valid file hash,
+    then makes a get request to the VirusTotal Service
 
     Inputs:
         resource --- String representing a file's hash
@@ -28,16 +31,12 @@ def request_data(resource=None, user_key=None):
         String containg the scan results (if the file could be scanned)
     '''
 
-    logging.basicConfig(filename='errors.log', level=logging.ERROR,
-                        format='%(asctime)s.%(msecs)03d %(levelname)s: %(funcName)s: %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S')
-
     if resource is None or not is_valid_hash(resource):
-        raise InvalidFileHashError()
+        raise Exception('Enter a valid file hash (MD5, SHA-1, or SHA-256)')
 
     api_key = os.environ.get('VIRUSTOTAL_API_KEY', user_key)
     if api_key is None:
-        raise APIKeyNotFoundError()
+        raise Exception('Could not find VirusTotal API Key')
 
     try:
         url = 'https://www.virustotal.com/vtapi/v2/file/report'
@@ -46,13 +45,13 @@ def request_data(resource=None, user_key=None):
         response.raise_for_status()
     except ConnectionError as err:
         logging.error(err)
-        raise VirusTotalUnreachableError()
+        raise
     except HTTPError as err:
         logging.error(err)
-        raise UnexpectedResponseError()
+        raise 
     except RequestException as err:
         logging.error(err)
-        raise RequestException('Request could not be handled')
+        raise
     except Exception as err:
         logging.error(err)
         raise Exception('An unknown error has occured')
