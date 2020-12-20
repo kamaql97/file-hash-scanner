@@ -10,6 +10,7 @@ import re
 def is_valid_hash(file_hash):
     """
     Method to check for valid file hash
+    (Simple check, API returns response_code 0 if not recognised)
 
     Inputs:
         file_hash --- String representing a file's hash

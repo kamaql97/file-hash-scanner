@@ -21,6 +21,7 @@ class TestValidation(unittest.TestCase):
     """
     Test case for testing the method that checks for valid file hash
     """
+    
     def test_valid_md5(self):
         self.assertTrue(is_valid_hash('4371a61227f8b7a4536e91aeff4f9af9'))
 
@@ -38,6 +39,7 @@ class TestScannnerAPI(unittest.TestCase):
     """
     Test case for testing API response with a known malicious file
     """
+
     def test_known_file(self):
         try:
             request_data('84c82835a5d21bbcf75a61706d8ab549')
