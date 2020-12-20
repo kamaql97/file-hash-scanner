@@ -6,5 +6,6 @@ Example usage code
 
 from solution.scanner import request_data
 
+
 with open('output.md', 'w+') as output_file:
-    output_file.write(request_data('6E0B782A9B06834290B24C91C80B12D7AD3C3133'))
+    output_file.write(request_data('84c82835a5d21bbcf75a61706d8ab549'))
