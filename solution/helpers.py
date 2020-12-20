@@ -45,6 +45,5 @@ def make_md_table(title, dicts):
     joined_str = "|".join(["{{:<{}}}".format(i) for i in max_col_widths])
     ans_str += f"### {title}\n".title()
     for row in table_rows:
-        ans_str += joined_str.format(*row)
-        ans_str += "\n"
+        ans_str += joined_str.format(*row) + "\n"
     return ans_str
