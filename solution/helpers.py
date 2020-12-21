@@ -5,6 +5,7 @@ Helper methods for input validation and output formatting
 """
 
 import re
+import datetime
 
 
 def is_valid_hash(file_hash):
@@ -48,3 +49,9 @@ def make_md_table(title, dicts):
     for row in table_rows:
         ans_str += joined_str.format(*row) + "\n"
     return ans_str
+
+
+def get_days_diff(my_date):
+    scan_date = datetime.date.fromisoformat(my_date[0:4] + '-' + my_date[4:6] + '-' + my_date[6:])
+    today_date = datetime.date.today()
+    return today_date - scan_date

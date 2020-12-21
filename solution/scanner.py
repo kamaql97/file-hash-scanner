@@ -7,10 +7,11 @@ File scanning code
 import logging
 import os
 
+from collections import OrderedDict
 import requests
 from requests.exceptions import HTTPError, RequestException
 
-from solution.helpers import is_valid_hash, make_md_table
+from solution.helpers import is_valid_hash, make_md_table, get_days_diff
 
 
 logging.basicConfig(filename='errors.log', level=logging.ERROR,
@@ -77,10 +78,11 @@ def handle_data(data):
 
         if data['response_code'] == 1:      # item present and could be retrieved
 
+            sorted_scans = OrderedDict(sorted(data['scans'].items()))
             hashes = [{'MD5': data['md5'], 'SHA-1': data['sha1'], 'SHA-256': data['sha256']}]
             resuls = [{'Total Scans': data['total'], 'Positive Scans': data['positives']}]
-            scans = [{'Scan Origin': key, 'Scan Result': val['detected']}
-                    for key, val in data['scans'].items()]
+            scans = [{'Scan Origin': key, 'Scan Result': val['result'], 'Days since scan': get_days_diff(str(val['update']))}
+                    for key, val in sorted_scans.items()]
 
             out_str = (make_md_table('scanned file', hashes)
                         + make_md_table('results', resuls)
